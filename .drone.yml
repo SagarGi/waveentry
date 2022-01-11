@@ -1,0 +1,38 @@
+kind: pipeline
+type: docker
+name: DroneCITest
+
+steps:
+  - name: waveentry-server
+    image: node:14
+    environment:
+      DB_HOST: mongodatabase
+      DB_PORT: 27017
+      DB_NAME: waveentrydatabase
+      SERVER_PORT: 3001
+      JWT_SECRET: abcd1234
+    commands:
+      - git clone https://github.com/SagarGi/wave-entry-server.git /waveentryserver
+      - cd /waveentryserver
+      - npm ci
+      - npm start
+
+  - name: waveentryUI
+    image: node:14
+    environment:
+      REACT_APP_SERVER_URI: http://waveentry-server:3001
+    commands:
+      - npm ci
+      - npm start
+
+  - name: acceptanceTest
+    image: node:14
+    commands:
+      - npm run test:e2e ./tests/acceptance/features/
+
+services:
+  - name: mongodatabase
+    image: mongo
+
+trigger:
+  branch: master
