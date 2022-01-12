@@ -5,8 +5,9 @@ name: DroneCITest
 steps:
   - name: waveentry-server
     image: node:14
+    detach: true
     environment:
-      DB_HOST: mongodatabase
+      DB_HOST: mongodatabased
       DB_PORT: 27017
       DB_NAME: waveentrydatabase
       SERVER_PORT: 3001
@@ -19,14 +20,20 @@ steps:
 
   - name: waveentryUI
     image: node:14
+    detach: true
     environment:
       REACT_APP_SERVER_URI: http://waveentry-server:3001
     commands:
       - npm ci
       - npm start
 
+  -name: wait
+
   - name: acceptanceTest
     image: node:14
+    environment:
+      server: http://waveentry-server:3001
+      web: http://waveentry:3000
     commands:
       - npm run test:e2e ./tests/acceptance/features/
 
