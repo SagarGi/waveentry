@@ -20,6 +20,7 @@ setDefaultTimeout(60 * 1000);
 BeforeAll(async function () {
   global.browser = await chromium.launch({
     // headless: false,
+    channel: "chrome",
   });
 
   // console.log("This is before all hooks");
