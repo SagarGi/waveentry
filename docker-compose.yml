@@ -1,0 +1,29 @@
+services:
+  db:
+    image: mongo
+    # container_name: mongodb
+    ports:
+      - "2700:27017"
+
+  server:
+    image: waveentryserver2
+    environment:
+      DB_HOST: db
+      DB_PORT: 27017
+      SERVER_PORT: 3002
+      JWT_SECRET: abcd1234
+    # command: npm run db:seed
+    ports:
+      - "3030:3002"
+    depends_on:
+      - db
+
+  web:
+    image: wave-entry-web
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_SERVER_URI=http://localhost:3005
+    depends_on:
+      - server
+      - db

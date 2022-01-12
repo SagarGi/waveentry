@@ -1,4 +1,4 @@
-node_modules
 .gitignore
-README.md
-build
+node_modules
+.env.example
+docker-compose.yml
