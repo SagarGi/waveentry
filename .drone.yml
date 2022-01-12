@@ -26,7 +26,6 @@ steps:
     commands:
       - npm ci
       - BROWSER=none npm start
-
   - name: wait
     image: owncloudci/wait-for:latest
     commands:
